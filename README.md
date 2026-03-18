@@ -1,6 +1,17 @@
 # JenkinsDock
 
+> 📚 **Full Documentation**: Visit [JenkinsDock Documentation](https://thekhiem7.github.io/jenkins-docker-builder/) for the complete interactive documentation site with search, navigation, and diagrams.
+
 Practical guide to running Jenkins with Docker, covering Docker-in-Docker builds and secure deployments behind an Nginx reverse proxy in a self-hosted environment.
+
+---
+
+## Quick Links
+
+- 🌐 **[View Full Documentation](https://thekhiem7.github.io/jenkins-docker-builder/)** - Interactive docs with search and navigation
+- 📖 [Overview](docs/README.md) - Get started with JenkinsDock
+- 🔒 [Security Risks](docs/security-risks.md) - Critical security considerations
+- 🚀 [Reverse Proxy Setup](docs/reverse-proxy.md) - Production deployment guide
 
 ---
 

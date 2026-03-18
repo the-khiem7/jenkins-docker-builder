@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Practical guide to running Jenkins with Docker, covering Docker-in-Docker builds and secure deployments">
+    <title>JenkinsDock - Jenkins Docker Guide</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐳</text></svg>">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core-dark.min.css">
+    <style>
+      .markdown-section {
+        max-width: 900px;
+      }
+      .sidebar {
+        max-width: 300px;
+      }
+      .app-nav {
+        margin-right: 20px;
+      }
+      /* Custom dark theme enhancements */
+      .markdown-section h1 {
+        border-bottom: 1px solid #4a5568;
+        padding-bottom: 0.3em;
+      }
+      .markdown-section h2 {
+        border-bottom: 1px solid #4a5568;
+        padding-bottom: 0.3em;
+      }
+      .markdown-section code {
+        background-color: #1a202c;
+        border-radius: 4px;
+        padding: 0.2em 0.4em;
+      }
+      .markdown-section pre > code {
+        background-color: #1a202c;
+        padding: 1em;
+        border-radius: 6px;
+        display: block;
+        overflow-x: auto;
+      }
+      .markdown-section blockquote {
+        border-left: 4px solid #4299e1;
+        background-color: #1a202c;
+        padding: 0.5em 1em;
+        margin: 1em 0;
+      }
+      .markdown-section table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+      }
+      .markdown-section th,
+      .markdown-section td {
+        border: 1px solid #4a5568;
+        padding: 0.75em;
+        text-align: left;
+      }
+      .markdown-section th {
+        background-color: #2d3748;
+      }
+      .markdown-section tr:nth-child(even) {
+        background-color: #1a202c;
+      }
+      /* Mermaid diagram container */
+      .mermaid {
+        text-align: center;
+        margin: 2em 0;
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <div id="app"></div>
+    <script>
+      window.$docsify = {
+        // Site name displayed in sidebar
+        name: 'JenkinsDock',
+        
+        // GitHub repository for corner widget
+        repo: 'https://github.com/TheKhiem7/jenkins-docker-builder',
+        
+        // Load sidebar from _sidebar.md
+        loadSidebar: true,
+        
+        // Load navbar from _navbar.md (optional)
+        loadNavbar: false,
+        
+        // Enable cover page from _coverpage.md
+        coverpage: true,
+        
+        // Only show cover on root
+        onlyCover: true,
+        
+        // Homepage file (default: README.md)
+        homepage: 'README.md',
+        
+        // Maximum heading level in table of contents
+        maxLevel: 4,
+        
+        // Auto-generate TOC in sidebar (0 = disabled)
+        subMaxLevel: 3,
+        
+        // Scroll to top on route change
+        auto2top: true,
+        
+        // DOM element to mount (default: '#app')
+        el: '#app',
+        
+        // File extension for markdown files
+        ext: '.md',
+        
+        // Hide sidebar completely
+        hideSidebar: false,
+        
+        // Theme configuration
+        themeColor: '#4299e1',
+        
+        // Search plugin configuration
+        search: {
+          maxAge: 86400000, // Expiration time, one day
+          paths: 'auto', // Use auto paths
+          placeholder: 'Search...',
+          noData: 'No results found!',
+          depth: 4,
+          hideOtherSidebarContent: false,
+          namespace: 'jenkins-docker-builder',
+        },
+        
+        // Pagination plugin configuration
+        pagination: {
+          previousText: '← Previous',
+          nextText: 'Next →',
+          crossChapter: true,
+          crossChapterText: true,
+        },
+        
+        // Plugins
+        plugins: [
+          // Add custom plugins here
+        ],
+      };
+    </script>
+    
+    <!-- Docsify core -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@5"></script>
+    
+    <!-- Search plugin -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@5/lib/plugins/search.min.js"></script>
+    
+    <!-- Pagination plugin -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-pagination@latest/dist/docsify-pagination.min.js"></script>
+    
+    <!-- Copy code plugin -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+    
+    <!-- Zoom image plugin -->
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    
+    <!-- External script for emoji support -->
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+    
+    <!-- Mermaid for diagrams -->
+    <script src="//cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script>
+      // Initialize Mermaid with dark theme
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        securityLevel: 'loose',
+      });
+    </script>
+    
+    <!-- Custom plugin for Mermaid rendering -->
+    <script>
+      // Docsify plugin to render Mermaid diagrams
+      const docsifyMermaid = {
+        init: function() {
+          console.log('Mermaid plugin initialized');
+        },
+        beforeEach: function(markdown) {
+          return markdown;
+        },
+        afterEach: function(html) {
+          // Find all mermaid code blocks and convert them
+          const mermaidBlocks = html.match(/<pre class="mermaid">([\s\S]*?)<\/pre>/g);
+          if (mermaidBlocks) {
+            mermaidBlocks.forEach(function(block) {
+              const code = block.replace(/<pre class="mermaid">|<\/pre>/g, '');
+              const div = '<div class="mermaid">' + code + '</div>';
+              html = html.replace(block, div);
+            });
+          }
+          return html;
+        },
+        done: function() {
+          mermaid.init();
+        }
+      };
+      
+      // Register the plugin
+      if (window.$docsify.plugins) {
+        window.$docsify.plugins.push(docsifyMermaid);
+      } else {
+        window.$docsify.plugins = [docsifyMermaid];
+      }
+    </script>
+  </body>
+</html>
