@@ -194,27 +194,6 @@ sh 'docker push myapp:${BUILD_NUMBER}'
 sh 'docker run --rm myapp:${BUILD_NUMBER} npm test'
 ```
 
-Example Dockerfile:
-
-```dockerfile
-FROM jenkins/jenkins:lts
-
-USER root
-
-RUN apt-get update \
- && apt-get install -y docker-ce-cli \
- && rm -rf /var/lib/apt/lists/*
-
-USER jenkins
-```
-
-This allows Jenkins pipelines to run commands such as:
-
-```
-docker build
-docker push
-```
-
 ---
 
 ## Security Risks: Exposing Jenkins on Port 8080
@@ -477,3 +456,16 @@ docker-compose up -d
 - [ ] Access logs monitored
 
 ---
+
+## Additional Resources
+
+- [Jenkins Official Documentation](https://www.jenkins.io/doc/)
+- [Docker Security Best Practices](https://docs.docker.com/engine/security/)
+- [Nginx Reverse Proxy Configuration](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)
+- [OWASP Security Guidelines](https://owasp.org/www-project-top-ten/)
+
+---
+
+## License
+
+This documentation is provided as a reference guide for educational and practical purposes.
