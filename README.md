@@ -1,5 +1,7 @@
 # JenkinsDock
 
+[![Build and Push Docker Image](https://github.com/the-khiem7/jenkins-docker-builder/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/the-khiem7/jenkins-docker-builder/actions/workflows/docker-publish.yml)
+
 Practical guide to running Jenkins with Docker, covering Docker-in-Docker builds and secure deployments behind an Nginx reverse proxy in a self-hosted environment.
 
 ---
