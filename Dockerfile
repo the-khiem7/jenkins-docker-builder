@@ -2,7 +2,7 @@ FROM jenkins/jenkins:lts-jdk21
 
 USER root
 
-LABEL org.opencontainers.image.source https://github.com/the-khiem7/jenkins-docker-builder
+LABEL org.opencontainers.image.source="https://github.com/the-khiem7/jenkins-docker-builder"
 
 # Install required packages for Docker repository setup
 RUN apt-get update \
