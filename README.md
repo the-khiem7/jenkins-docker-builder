@@ -197,7 +197,7 @@ sh 'docker run --rm myapp:${BUILD_NUMBER} npm test'
 Example Dockerfile:
 
 ```dockerfile
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:lts-jdk17
 
 USER root
 
