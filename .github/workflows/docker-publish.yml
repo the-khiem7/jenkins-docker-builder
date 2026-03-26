@@ -3,13 +3,11 @@ name: Build and Push Docker Image
 on:
   push:
     branches: [ main ]
+    tags:
+      - "v*"
     paths:
       - Dockerfile
       - .github/workflows/docker-publish.yml
-
-  push:
-    tags:
-      - "v*"
 
   pull_request:
     branches: [ main ]
